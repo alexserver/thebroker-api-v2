@@ -1,9 +1,9 @@
 import { Elysia } from 'elysia'
-import { tickers } from './handlers/tickers'
+import { publicApi } from './plugins/public'
 
 const port = Number(process.env.API_DEFAULT_PORT ?? 1234)
 const app = new Elysia()
-  .use(tickers)
+  .use(publicApi)
   .onError(({ set, code, error }) => {
     set.status = 500
     return new Response(error.toString())

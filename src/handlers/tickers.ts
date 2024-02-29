@@ -2,7 +2,7 @@ import { getTickerEod } from '../orm/eod'
 import { getTicker, getTickers } from '../orm/tickers'
 import { Elysia } from 'elysia'
 
-export const tickers = new Elysia()
+export const tickers = new Elysia() //
   .get('/tickers', async ({ query: { search, limit, offset } }) => {
     try {
       const data = await getTickers({ search, limit, offset })
