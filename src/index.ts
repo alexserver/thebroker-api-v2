@@ -1,7 +1,22 @@
-import { Elysia } from "elysia";
+import { Elysia } from 'elysia'
+import { authMiddleware } from './handlers/auth'
+import { tickerAll } from './handlers/tickers'
 
-const app = new Elysia().get("/", () => "Hello Elysia").listen(3000);
+const port = Number(process.env.API_DEFAULT_PORT ?? 1234)
+const app = new Elysia()
+  .guard(
+    {
+      beforeHandle: authMiddleware,
+    },
+    (app) => app.get('/tickers', tickerAll)
+    // .get('/tickers/:symbol', tickerOne)
+    // .get('/tickers/:symbol/eod/:when', eodOne)
+    // .get('/eod', eodAll)
+  )
+  .onError(({ set, code, error }) => {
+    set.status = 500
+    return new Response(error.toString())
+  })
+  .listen(port)
 
-console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
-);
+console.log(`Web API running on http://localhost:${port} 🚀`)
