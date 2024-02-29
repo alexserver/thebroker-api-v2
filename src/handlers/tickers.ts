@@ -1,4 +1,4 @@
-import { getTickers } from '../orm/tickers'
+import { getTicker, getTickers } from '../orm/tickers'
 import { Context } from 'elysia'
 
 export const tickerAll = async ({ query }: Context) => {
@@ -15,16 +15,16 @@ export const tickerAll = async ({ query }: Context) => {
   }
 }
 
-// export const tickerOne = async (req, res) => {
-//   const { symbol } = req.params;
-//   try {
-//     const data = await getTicker({ symbol });
-//     if (data) {
-//       res.send(data);
-//     } else {
-//       res.send({});
-//     }
-//   } catch (err) {
-//     throw new Error(err);
-//   }
-// };
+export const tickerOne = async ({ params }: Context) => {
+  const { symbol } = params
+  try {
+    const data = await getTicker({ symbol })
+    if (data) {
+      return data
+    } else {
+      return {}
+    }
+  } catch (err) {
+    throw new Error('Error fetching data')
+  }
+}

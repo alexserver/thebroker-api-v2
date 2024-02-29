@@ -1,6 +1,6 @@
 import { Elysia } from 'elysia'
 import { authMiddleware } from './handlers/auth'
-import { tickerAll } from './handlers/tickers'
+import { tickerAll, tickerOne } from './handlers/tickers'
 
 const port = Number(process.env.API_DEFAULT_PORT ?? 1234)
 const app = new Elysia()
@@ -8,8 +8,7 @@ const app = new Elysia()
     {
       beforeHandle: authMiddleware,
     },
-    (app) => app.get('/tickers', tickerAll)
-    // .get('/tickers/:symbol', tickerOne)
+    (app) => app.get('/tickers', tickerAll).get('/tickers/:symbol', tickerOne)
     // .get('/tickers/:symbol/eod/:when', eodOne)
     // .get('/eod', eodAll)
   )
