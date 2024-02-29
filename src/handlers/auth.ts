@@ -1,4 +1,4 @@
-import { Context } from 'elysia'
+import { Context, Elysia } from 'elysia'
 
 const API_KEY = process.env.API_KEY
 

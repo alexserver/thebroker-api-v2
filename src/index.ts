@@ -1,21 +1,9 @@
 import { Elysia } from 'elysia'
-import { authMiddleware } from './handlers/auth'
-import { tickerAll, tickerOne } from './handlers/tickers'
-import { eodAll, eodOne } from './handlers/eod'
+import { tickers } from './handlers/tickers'
 
 const port = Number(process.env.API_DEFAULT_PORT ?? 1234)
 const app = new Elysia()
-  .guard(
-    {
-      beforeHandle: authMiddleware,
-    },
-    (app) =>
-      app
-        .get('/tickers', tickerAll)
-        .get('/tickers/:symbol', tickerOne)
-        .get('/tickers/:symbol/eod/:when', eodOne)
-        .get('/eod', eodAll)
-  )
+  .use(tickers)
   .onError(({ set, code, error }) => {
     set.status = 500
     return new Response(error.toString())
