@@ -1,5 +1,7 @@
 import { getTickerEod } from '../orm/eod'
-import { getTicker, getTickers } from '../orm/tickers'
+// import { getTicker, getTickers } from '../orm/tickers'
+import { getTicker, getTickers as ormTickers } from '../orm/tickers'
+import { getTickers } from '../fetchers/tickers'
 import { Elysia } from 'elysia'
 
 export const tickers = new Elysia() //
@@ -12,7 +14,7 @@ export const tickers = new Elysia() //
         return {}
       }
     } catch (err) {
-      throw new Error('Error fetching data')
+      throw new Error(`Error fetching data\n${err}`)
     }
   })
   .get('/tickers/:symbol', async ({ params: { symbol } }) => {
@@ -24,7 +26,7 @@ export const tickers = new Elysia() //
         return {}
       }
     } catch (err) {
-      throw new Error('Error fetching data')
+      throw new Error(`Error fetching data\n${err}`)
     }
   })
   .get('/tickers/:symbol/eod/:when', async ({ params: { symbol, when } }) => {
@@ -36,6 +38,6 @@ export const tickers = new Elysia() //
         return {}
       }
     } catch (err) {
-      throw new Error('Error fetching ticker EOD')
+      throw new Error(`Error fetching data\n${err}`)
     }
   })

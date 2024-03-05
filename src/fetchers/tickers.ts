@@ -1,3 +1,5 @@
+import { cacheOrAPI } from '../cache'
+
 const API_URL = process.env.API_URL ?? ''
 const API_KEY = process.env.API_KEY ?? ''
 const API_REQUEST_LIMIT = process.env.API_REQUEST_LIMIT ?? '10'
@@ -16,10 +18,13 @@ export const getTickers = async ({
     if (search && search !== '') {
       url += `&search=${search}`
     }
-    const response = await fetch(url)
-    const data = await response.json()
+    const data = await cacheOrAPI(url)
     return 'pagination' in data && 'data' in data ? data : null
   } catch (err) {
-    throw new Error(`Error fetching from original API: ${err}`)
+    throw new Error(`Error fetching from original API\n${err}`)
   }
+}
+
+export const getTicker = async () => {
+  return null
 }
