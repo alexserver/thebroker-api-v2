@@ -25,6 +25,17 @@ export const getTickers = async ({
   }
 }
 
-export const getTicker = async () => {
-  return null
+export const getTicker = async ({
+  symbol = null,
+}: {
+  symbol?: string | null
+}) => {
+  if (!symbol) return null
+  const url = `${API_URL}/tickers/${symbol}?access_key=${API_KEY}`
+  try {
+    const data = await cacheOrAPI(url)
+    return data && 'name' in data && 'symbol' in data ? data : null
+  } catch (err) {
+    throw new Error(`Error fetching data from original API\n${err}`)
+  }
 }

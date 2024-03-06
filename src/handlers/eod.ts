@@ -1,5 +1,5 @@
 import { Elysia } from 'elysia'
-import { getEodHistory, getTickerEod } from '../orm/eod'
+import { getEodHistory } from '../fetchers/eod'
 
 export const eod = new Elysia() //
   .get('/eod', async ({ query: { symbols, date_from, date_to } }) => {

@@ -1,7 +1,5 @@
-import { getTickerEod } from '../orm/eod'
-// import { getTicker, getTickers } from '../orm/tickers'
-import { getTicker, getTickers as ormTickers } from '../orm/tickers'
-import { getTickers } from '../fetchers/tickers'
+import { getTickerEod } from '../fetchers/eod'
+import { getTickers, getTicker } from '../fetchers/tickers'
 import { Elysia } from 'elysia'
 
 export const tickers = new Elysia() //
