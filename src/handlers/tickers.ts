@@ -12,7 +12,8 @@ export const tickers = new Elysia() //
         return {}
       }
     } catch (err) {
-      throw new Error(`Error fetching data\n${err}`)
+      console.error(`Error fetching data\n${err}`)
+      throw new Error('Error fetching data for /tickers')
     }
   })
   .get('/tickers/:symbol', async ({ params: { symbol } }) => {
@@ -24,7 +25,8 @@ export const tickers = new Elysia() //
         return {}
       }
     } catch (err) {
-      throw new Error(`Error fetching data\n${err}`)
+      console.error(`Error fetching data for /tickers/:symbol\n${err}`)
+      throw new Error('Error fetching data for /tickers/:symbol')
     }
   })
   .get('/tickers/:symbol/eod/:when', async ({ params: { symbol, when } }) => {
@@ -36,6 +38,9 @@ export const tickers = new Elysia() //
         return {}
       }
     } catch (err) {
-      throw new Error(`Error fetching data\n${err}`)
+      console.error(
+        `Error fetching data for /tickers/:symbol/eod/:when\n${err}`
+      )
+      throw new Error('Error fetching data for /tickers/:symbol/eod/:when')
     }
   })

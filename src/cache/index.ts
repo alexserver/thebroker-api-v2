@@ -11,8 +11,7 @@ export const getClient = async () => {
   if (client !== null) return client
   client = await createClient({ url: REDIS_AUTH_URL })
     .on('error', (err) => {
-      console.error(`Error connecting to REDIS instance\n${err}`)
-      throw new Error('Error connecting to REDIS instance')
+      throw new Error(`Error connecting to REDIS instance\n${err}`)
     })
     .connect()
   return client

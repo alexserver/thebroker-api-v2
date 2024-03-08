@@ -11,6 +11,7 @@ export const eod = new Elysia() //
         return {}
       }
     } catch (err) {
-      throw new Error('Error fetching EOD history')
+      console.error(`Error fetching data for /eod\n${err}`)
+      throw new Error('Error fetching data for /eod')
     }
   })
