@@ -11,7 +11,7 @@ services:
       - 6379:6379
       - 8001:8001
     environment:
-      - REDIS_ARGS=--save 900 1 300 10 60 100 --rdbcompression yes --appendonly yes --appendfsync everysec
+      - REDIS_ARGS=--save 900 1 300 10 60 100 --rdbcompression yes --appendonly yes --appendfsync everysec --user admin on >p4ss ~* &* +@all
 
 volumes:
   redis_stack_volume_data:
