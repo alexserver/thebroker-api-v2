@@ -3,13 +3,13 @@
 import { createClient } from 'redis'
 import { CryptoHasher, env } from 'bun'
 
-const REDIS_AUTH_URL = env.REDIS_AUTH_URL
+const REDIS_URL = env.REDIS_URL
 
 let client: ReturnType<typeof createClient> | null = null
 
 export const getClient = async () => {
   if (client !== null) return client
-  client = await createClient({ url: REDIS_AUTH_URL })
+  client = await createClient({ url: REDIS_URL })
     .on('error', (err) => {
       throw new Error(`Error connecting to REDIS instance\n${err}`)
     })

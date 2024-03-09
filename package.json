@@ -13,6 +13,7 @@
     "redis": "^4.6.13"
   },
   "devDependencies": {
+    "@flydotio/dockerfile": "latest",
     "bun-types": "latest"
   },
   "module": "src/index.js"
