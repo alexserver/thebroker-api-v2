@@ -1,4 +1,3 @@
-version: '3.3'
 services:
   redis:
     # latest version installed: 7.2.4

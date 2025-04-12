@@ -2,6 +2,7 @@
 
 import { CryptoHasher, env } from 'bun'
 import { createClient } from 'redis'
+import { log } from './log'
 
 const REDIS_URL = env.REDIS_URL
 const API_KEY = env.API_KEY ?? ''
@@ -14,8 +15,8 @@ export const getRedisClient = async () => {
   // else, connect to REDIS instance
   client = await createClient({ url: REDIS_URL })
     .on('error', (err) => {
-      console.error(
-        `Error connecting to REDIS instance\n${err}, we'll fallback to Markestack API`
+      log(
+        `Error connecting to REDIS instance: ${err}, we'll fallback to Markestack API`
       )
     })
     .connect()
@@ -31,16 +32,14 @@ export const getDataFromRedis = async (key: string) => {
     // if key exists in cache, return data from there
     if (await cl.exists(key)) {
       const data = await cl.get(key)
-      console.log(
-        `Data for key ${key} exists in REDIS cache, serving it from there`
-      )
+      log(`Data for key ${key} exists in REDIS cache, serving it from there`)
       return JSON.parse(data ?? '')
     }
     // else, return null
-    console.log(`Data for key ${key} does not exist in REDIS cache`)
+    log(`Data for key ${key} does not exist in REDIS cache`)
     return null
   } catch (err) {
-    console.error(`Error fetching data from REDIS cache\n${err}`)
+    log(`Error fetching data from REDIS cache: ${err}`)
     return null
   }
 }
@@ -49,13 +48,13 @@ export const storeDataInRedis = async (key: string, data: any) => {
   const cl = await getRedisClient()
   if (!cl) return { success: false, message: 'Failed to connect to REDIS' }
   await cl.set(key, JSON.stringify(data))
-  console.log(`Data stored in REDIS cache for key ${key}`)
+  log(`Data stored in REDIS cache for key ${key}`)
   return { success: true, message: 'Data stored in REDIS cache' }
 }
 
 export const fetchFromAPI = async (url: string) => {
-  const obfuscatedUrl = url.replace(API_KEY, '********')
-  console.log(`Fetching data from Markestack API\n${obfuscatedUrl}`)
+  const obfuscatedUrl = url.replace(API_KEY, '*****')
+  log(`Fetching data from Markestack API: ${obfuscatedUrl}`)
   try {
     const response = await fetch(url, {
       headers: {
@@ -65,7 +64,7 @@ export const fetchFromAPI = async (url: string) => {
     const data = await response.json()
     return data
   } catch (err) {
-    console.error(`Error fetching data from MarketStack API\n${err}`)
+    log(`Error fetching data from MarketStack API: ${err}`)
     return null
   }
 }
@@ -87,10 +86,13 @@ export const cacheOrAPI = async (url: string) => {
     try {
       data = await fetchFromAPI(url)
       // store data in REDIS instance
+      if (!data) {
+        throw new Error('Failed to fetch data from API')
+      }
       await storeDataInRedis(key, data)
     } catch (err) {
-      console.error(`Error fetching data from MarketStack API\n${err}`)
-      throw new Error(`Error fetching data from MarketStack API\n${err}`)
+      log(`Error fetching data from MarketStack API: ${err}`)
+      throw new Error(`Error fetching data from MarketStack API: ${err}`)
     }
   }
   return data

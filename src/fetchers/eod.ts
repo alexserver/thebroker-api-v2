@@ -1,4 +1,4 @@
-import { cacheOrAPI } from '../cache'
+import { cacheOrAPI } from '../lib/cache'
 
 const API_URL = process.env.API_URL ?? ''
 const API_KEY = process.env.API_KEY ?? ''
