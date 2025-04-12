@@ -1,10 +1,10 @@
-# fly.toml app configuration file generated for thebroker-api-v2 on 2024-03-08T22:01:14-06:00
+# fly.toml app configuration file generated for thebroker-api-v2 on 2025-03-21T16:43:45-06:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
 app = 'thebroker-api-v2'
-primary_region = 'dfw'
+primary_region = 'gdl'
 
 [build]
 
@@ -20,3 +20,7 @@ primary_region = 'dfw'
   memory = '1gb'
   cpu_kind = 'shared'
   cpus = 1
+
+[deploy]
+  strategy = "rolling"
+  max_unavailable = 1
